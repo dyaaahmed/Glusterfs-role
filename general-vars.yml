@@ -14,3 +14,8 @@ lvname: lv0
 lvsize: 100
 filesystem: xfs
 mount_point: mount
+#Worker nodes
+host_ip:
+  - 192.168.54.130
+  - 192.168.54.131
+  - 192.168.54.132

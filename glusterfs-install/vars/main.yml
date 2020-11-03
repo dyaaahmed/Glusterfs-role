@@ -1,11 +1,2 @@
 ---
-gfs1: gfs1.test.local 
-gfs2: gfs2.test.local
-gfs3: gfs3.test.local
-disk: sdb
-pvname: pv0
-vgname: vg0
-lvname: lv0
-lvsize: 100
-filesystem: xfs
-mount_point: mount
+# VARS for Gluster installation

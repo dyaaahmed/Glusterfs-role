@@ -1,6 +1,2 @@
 ---
 # vars file for openshift-volumes
-host_ip:
-  - 192.168.54.130
-  - 192.168.54.131
-  - 192.168.54.132

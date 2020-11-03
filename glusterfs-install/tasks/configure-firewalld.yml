@@ -1,0 +1,27 @@
+---
+- name: configure firewalld
+  firewalld: port={{ item }} state=enabled permanent=yes zone=public
+  with_items:
+    - "24007-24008/tcp"
+    - "24009/tcp"
+    - "111/tcp"
+    - "139/tcp"
+    - "445/tcp"
+    - "965/tcp"
+    - "2049/tcp"
+    - "38465-38469/tcp"
+    - "631/tcp"
+    - "111/udp"
+    - "963/udp"
+    - "49152-49251/tcp"
+
+- name: enable services
+  firewalld: service={{ item }} state=enabled permanent=yes
+  with_items:
+    - "nfs"
+    - "samba"
+    - "samba-client"
+
+- name: reload firewalld rules
+  command: firewall-cmd --reload
+

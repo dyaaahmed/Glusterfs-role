@@ -1,0 +1,12 @@
+---
+- name: create gluster volume
+  gluster_volume:
+    state: present
+    name: data
+    bricks: "{{ mount_point }}/data"
+    rebalance: yes
+    cluster:
+      - "{{ gfs1 }}"
+      - "{{ gfs2 }}"
+      - "{{ gfs3 }}"
+  run_once: true

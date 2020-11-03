@@ -1,0 +1,5 @@
+---
+# tasks file for openshift-volumes
+- name: customize scripts
+  import_tasks: customze-scripts.yml
+  

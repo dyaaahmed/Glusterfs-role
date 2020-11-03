@@ -1,0 +1,25 @@
+---
+# tasks file for glusterfs
+- name: prepare glusterfs repos
+  yum: name={{ item }} state=latest
+  with_items:
+    - centos-release-gluster
+    - epel-release
+
+- name: update cache && install glusterfs-server
+  yum: update_cache=yes name=glusterfs-server state=latest
+
+- name: start and enable glusterfs service
+  service: name=glusterd state=restarted enabled=yes
+
+- name: Create a trusted storage pool
+  command: "gluster peer probe {{ item }}"
+  with_items: 
+    - "{{ gfs1 }}"
+    - "{{ gfs2 }}"
+    - "{{ gfs3 }}"
+  #when: inventory_hostname == "gfs1.test.local"
+  run_once: true
+  #register: peer_result
+  #failed_when: '"success" not in peer_result.stdout'
+   

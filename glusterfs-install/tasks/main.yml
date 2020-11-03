@@ -1,0 +1,11 @@
+---
+- name: configure firewalld
+  import_tasks: configure-firewalld.yml
+- name: install glusterfs
+  import_tasks: install-glusterfs.yml
+- name: prepare volume
+  import_tasks: prepare-volume.yml
+  tags: skip
+- name: add brick
+  import_tasks: add-brick.yml
+  tags: skip

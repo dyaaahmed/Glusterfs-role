@@ -1,0 +1,19 @@
+---
+# tasks file for glusterfs
+- name: install common packages
+  yum: name={{ item }} state=latest
+  with_items:
+    - vim
+    - net-tools
+    - screen
+
+- name: create hosts files
+  template:
+    src: templates/hosts.j2
+    dest: /etc/hosts
+
+- name: ensure that selinux enabled 
+  lineinfile: regexp="^SELINUX=" dest=/etc/selinux/config line="SELINUX=enforcing"
+
+- name: enable firewalld   
+  service: name=firewalld state=started enabled=yes

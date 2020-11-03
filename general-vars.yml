@@ -1,0 +1,16 @@
+---
+# vars file for glusterfs
+host1_ip: "192.168.54.130"
+host2_ip: "192.168.54.131"
+host3_ip: "192.168.54.132"
+gfs1: gfs1.test.local 
+gfs2: gfs2.test.local
+gfs3: gfs3.test.local
+disk: sdb
+pvname: pv0
+vgname: vg0
+lvname: lv0
+#size in MB
+lvsize: 100
+filesystem: xfs
+mount_point: mount

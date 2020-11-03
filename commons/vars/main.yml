@@ -1,0 +1,9 @@
+---
+# vars file for glusterfs
+host1_ip: "192.168.54.130"
+gfs1: gfs1.test.local
+host2_ip: "192.168.54.131"
+gfs2: gfs2.test.local
+host3_ip: "192.168.54.132"
+gfs3: gfs3.test.local
+

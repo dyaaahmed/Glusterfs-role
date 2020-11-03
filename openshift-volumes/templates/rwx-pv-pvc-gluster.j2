@@ -1,0 +1,6 @@
+{% set server_ip = [] %}
+{% for ip in host_ip  %}
+{{ server_ip.append( ip ) }}
+{% endfor %}
+
+ips: {{ server_ip|join(',') }}

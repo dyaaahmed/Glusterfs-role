@@ -1,0 +1,45 @@
+---
+- name: create pv
+  command: "pvcreate /dev/{{ disk }}"
+  register: result
+  failed_when: "'successfully created' not in result.stdout"
+  tags: skipvolumes
+
+- name: Manage LVM volume group
+  lvg:
+    vg: "{{ vgname }}"
+    pvs: "/dev/{{ disk }}"
+    state: present
+  tags: skipvolumes
+
+- name: Manage LVM logical volume
+  lvol:
+    vg: "{{ vgname }}"
+    lv: "{{ lvname }}"
+    size: "{{ lvsize }}"
+    #    resizefs: "{{ item.1.resizefs | default('yes') }}"
+    #  shrink: "{{ item.1.schrink | default('no') }}"
+    #    force: "{{ item.1.force | default('no') }}"
+    state: present
+  tags: skipvolumes
+
+- name: Creating new filesystem on new LVM logical volume
+  filesystem:
+    fstype: "{{ filesystem | default('xfs') }}"
+    dev: "/dev/{{ vgname }}/{{ lvname }}"
+  tags: skipvolumes
+
+- name: Create a directory if it does not exist
+  file:
+    path: "{{ mount_point }}"
+    state: directory
+    mode: '0755'
+
+- name:  Mounting new filesystem
+  mount:
+    path: "/{{ mount_point }}"
+    src: "/dev/mapper/{{ vgname }}-{{ lvname }}"
+    fstype: "{{ filesystem }}"
+    state: present
+    opts: defaults,net_dev
+

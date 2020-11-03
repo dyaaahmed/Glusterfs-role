@@ -3,7 +3,7 @@
   gluster_volume:
     state: present
     name: data
-    bricks: "{{ mount_point }}/data"
+    bricks: "/{{ mount_point }}/data"
     rebalance: yes
     cluster:
       - "{{ gfs1 }}"

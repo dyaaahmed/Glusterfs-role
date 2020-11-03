@@ -1,20 +1,9 @@
 ---
-#- name: check persistent volumes
-#  command: "pvs /dev/{{ disk }}"
-#  register: pvs_check
-
-#- name: create pv
-#  command: "pvcreate /dev/{{ disk }}"
-#  register: result
-#  when: "'Failed' in pvs_check.stdout"
-#  tags: skipvolumes
-
 - name: Manage LVM volume group
   lvg:
     vg: "{{ vgname }}"
     pvs: "/dev/{{ disk }}"
     state: present
-  tags: skipvolumes
 
 - name: Manage LVM logical volume
   lvol:
@@ -28,12 +17,6 @@
   filesystem:
     fstype: "{{ filesystem | default('xfs') }}"
     dev: "/dev/{{ vgname }}/{{ lvname }}"
-
-#- name: Create a directory if it does not exist
-#  file:
-#    path: "/{{ mount_point }}"
-#    state: directory
-#    mode: '0755'
 
 - name:  Mounting new filesystem
   mount:

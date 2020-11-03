@@ -4,4 +4,7 @@
   roles:
     - commons
     - glusterfs-install  
+- hosts: masters
+  become: yes
+  roles:
     - openshift-volumes

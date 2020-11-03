@@ -1,6 +1,4 @@
-{% set server_ip = [] %} {% for ip in host_ip  %} {{ servers_ips.append( ip ) }} {% endfor %}
-
-#gluster volume set auth {{ servers_ips|join(',') }}
+#!/bin/bash
 read -p 'enter "c" for create "d" for delete: ' IN
 read -p 'enter volume: ' VOLUME
 #read -p 'enter dir: ' SUB 
@@ -17,7 +15,9 @@ ssh $i restorecon -v $DIR
 ls -ldZ $DIR
 done
 gluster volume create $VOLUME replica 3 gfs1:$DIR gfs2:$DIR gfs3:$DIR
-gluster volume set $VOLUME auth.allow 10.107.148.13,10.107.148.14,10.107.148.15,10.107.148.16,10.107.148.17,10.107.148.18,10.107.148.19,10.107.148.20,10.107.148.21,10.107.148.22
+{% set server_ip = [] %} {% for ip in host_ip  %} {{ server_ip.append( ip ) }} {% endfor %}
+
+gluster volume set $VOLUME auth.allow "{{ server_ip|join(',') }}"
 gluster volume start $VOLUME
 elif [ "$IN" == "d" ]; then
 gluster volume stop $VOLUME
@@ -47,25 +47,13 @@ spec:
   capacity:
     storage: "${PVSIZE}Gi"
   accessModes: 
-    - ReadWriteMany
+    - ReadWriteOnce
   glusterfs:
     endpoints: glusterfs-cluster 
     path: ${GLUSTER_PATH}
     readOnly: false
   persistentVolumeReclaimPolicy: Retain
 
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: ${PVNAME}-pvc
-spec:
-  accessModes:
-  - ReadWriteMany
-  resources:
-     requests:
-       storage: "${PVSIZE}Gi"
-  volumeName: "${PVNAME}"
 EOF
 oc create -f pv-pvc.yaml
 rm -rf pv-pvc.yaml
